@@ -13,14 +13,34 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import etu1966.framework.Mapping;
+import generalisation.annotations.Url;
+import generalisation.utils.FrameMethodUtil;
+import java.lang.reflect.Method;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 
 /**
  *
  * @author MAELA
  */
 public class FrontServlet extends HttpServlet {
-        HashMap<String,Mapping> MappingUrls;
+    HashMap<String,Mapping> MappingUrls;
 
+    public HashMap<String, Mapping> getMappingUrls() {
+        return this.MappingUrls;
+    }
+
+    public void setMappingUrls(HashMap<String, Mapping> MappingUrls){
+        this.MappingUrls = MappingUrls;
+    }
+    
+
+        
+       
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -29,7 +49,52 @@ public class FrontServlet extends HttpServlet {
      * @param response servlet response
      * @throws ServletException if a servlet-specific error occurs
      * @throws IOException if an I/O error occurs
+     * 
      */
+
+    public void init() throws ServletException {
+        try {
+            HashMap<String, Mapping> MappingUrls = new HashMap<>();
+            this.setMappingUrls(MappingUrls);
+            Set<String> allKey = this.getMappingUrls().keySet();
+            List<Class> allClass = FrameMethodUtil.getClassesInPackage("model");  
+            this.formHashMapAllPkClasses(allClass);
+            int indice = 0;
+           HashMap<String, Mapping> allHashMap = this.getMappingUrls();
+            for (Map.Entry<String, Mapping> entry : allHashMap.entrySet()) {
+                String key = entry.getKey();
+                String classe = entry.getValue().getClassName();
+                String method = entry.getValue().getMethod();
+                System.out.println("Clé : " + key + ", Class : " + classe + ", Method : " + method);
+}
+
+        } catch (IOException ex) {        
+            ex.printStackTrace();
+        } catch (ClassNotFoundException ex) {
+            ex.printStackTrace();
+        }
+    }
+    
+    public void formHashMapAllPkClasses(List<Class> allClass) throws IOException, ClassNotFoundException{
+        for(int i=0; i<allClass.size(); i++){
+            this.formHashMapOneClass(allClass.get(i));  
+        }
+    }
+    
+    public void formHashMapOneClass(Class<?> clazz) {
+        for (Method method : clazz.getDeclaredMethods()) {
+            if (method.isAnnotationPresent(Url.class)) {
+                Mapping mapping = new Mapping();
+                mapping.setClassName(clazz.getSimpleName());
+                mapping.setMethod(method.getName());
+                
+                String key = method.getAnnotation(Url.class).valeur();
+                this.getMappingUrls().put(key, mapping);
+            }
+        }
+    }
+    
+    
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
@@ -43,8 +108,8 @@ public class FrontServlet extends HttpServlet {
             out.println("<title>Servlet FrontServlet</title>");            
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1> Servlet name:" + splitUrl[4] + "</h1>");
-            out.println("<h2> Parameter name:" + request.getQueryString() + "</h2>");
+            out.println("<h1> Servlet name:" + splitUrl[3] + "</h1>");
+            out.println("<h2> Url:" + url + "</h2>");
             out.println("</body>");
             out.println("</html>");
         }
