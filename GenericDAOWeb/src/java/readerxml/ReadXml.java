@@ -23,7 +23,7 @@ public class ReadXml {
     String password;
     String database;
     String port;
-    File file = new File("D:\\bosy\\Final\\GenericDAO\\src\\config\\config.xml");
+    File file = new File("src\\conf\\config.xml");
 
     public ReadXml(String user, String password, String database, String port) {
         this.user = user;
