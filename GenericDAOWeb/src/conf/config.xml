@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+
+<base>
+    <dbconnection>
+        <user>postgres</user>
+        <password>root</password>
+        <database>generictest</database>
+        <port>5432</port> 
+        <driver>org.postgresql.Driver</driver>
+        <conObject>jdbc:postgresql://localhost:</conObject>
+    </dbconnection> 
+    <zetona>
+        <user>postgresdfa</user>
+    </zetona>
+</base>
