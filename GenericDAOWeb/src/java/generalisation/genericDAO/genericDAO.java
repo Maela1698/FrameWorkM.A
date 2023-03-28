@@ -14,10 +14,8 @@ import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- *
- * @author to
- */
+
+
 public class genericDAO {
     String prefix = "PER";
     int sizePK = 7;
