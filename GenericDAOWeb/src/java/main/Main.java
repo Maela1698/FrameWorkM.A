@@ -9,7 +9,7 @@ import generalisation.genericDAO.genericDAO;
 import java.util.List;
 import generalisation.utils.FrameMethodUtil;
 import java.sql.Connection;
-import model.Person;
+//import model.Person;
 /**
  *
  * @author MAELA
@@ -20,10 +20,10 @@ public class Main {
 //        for(int i=0;i<allClass.size();i++){
 //            System.err.println(allClass.get(i).getSimpleName());
 //        }
-        Person test = new Person();
-        List<Person> objets = genericDAO.getAll(test, null, null);
-        for (int i = 0; i < objets.size(); i++) {
-            System.out.println((objets.get(i)).getNom());
+//        Person test = new Person();
+//        List<Person> objets = genericDAO.getAll(test, null, null);
+//        for (int i = 0; i < objets.size(); i++) {
+//            System.out.println((objets.get(i)).getNom());
         }
     }
-}
+
