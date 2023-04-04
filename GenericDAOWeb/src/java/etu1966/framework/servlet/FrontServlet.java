@@ -163,6 +163,10 @@ public class FrontServlet extends HttpServlet {
             out.println(o);
             if (o instanceof ModelView) {
                 ModelView mv = (ModelView)o;
+                HashMap<String,Object> data = mv.getData();
+                for (Map.Entry<String, Object> entry : data.entrySet()) {
+                    request.setAttribute(entry.getKey(), entry.getValue());
+                }
                 RequestDispatcher dispatcher = request.getRequestDispatcher(mv.getView());
                 dispatcher.forward(request, response);
             }

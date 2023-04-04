@@ -3,12 +3,12 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/C:/Users/MAELA/Documents/GitHub/FrameWorkM.A/GenericDAOWeb/src/conf/config.xml</file>
+            <file>file:/C:/Users/MAELA/Documents/GitHub/FrameWorkM.A/GenericDAOWeb/src/java/</file>
             <file>file:/C:/Users/MAELA/Documents/GitHub/FrameWorkM.A/GenericDAOWeb/src/java/etu1966/framework/ModelView.java</file>
             <file>file:/C:/Users/MAELA/Documents/GitHub/FrameWorkM.A/GenericDAOWeb/src/java/readerxml/ReadXml.java</file>
-            <file>file:/C:/Users/MAELA/Documents/GitHub/FrameWorkM.A/GenericDAOWeb/web/WEB-INF/web.xml</file>
             <file>file:/C:/Users/MAELA/Documents/GitHub/FrameWorkM.A/GenericDAOWeb/src/java/etu1966/framework/servlet/FrontServlet.java</file>
-            <file>file:/C:/Users/MAELA/Documents/GitHub/FrameWorkM.A/GenericDAOWeb/web/META-INF/context.xml</file>
+            <file>file:/C:/Users/MAELA/Documents/GitHub/FrameWorkM.A/GenericDAOWeb/src/java/generalisation/annotations/Url.java</file>
+            <file>file:/C:/Users/MAELA/Documents/GitHub/FrameWorkM.A/GenericDAOWeb/src/java/etu1966/framework/Mapping.java</file>
         </group>
     </open-files>
 </project-private>
