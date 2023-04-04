@@ -1,4 +1,4 @@
-/*
+    /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
@@ -13,9 +13,12 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import etu1966.framework.Mapping;
+import etu1966.framework.ModelView;
 import generalisation.annotations.Url;
 import generalisation.utils.FrameMethodUtil;
+import javax.servlet.RequestDispatcher;
 import java.lang.reflect.Method;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -29,6 +32,15 @@ import java.util.logging.Logger;
  */
 public class FrontServlet extends HttpServlet {
     HashMap<String,Mapping> MappingUrls;
+    List<Class> modelClasses;
+
+    public List<Class> getModelClasses() {
+        return modelClasses;
+    }
+
+    public void setModelClasses(List<Class> modelClasses) {
+        this.modelClasses = modelClasses;
+    }
 
     public HashMap<String, Mapping> getMappingUrls() {
         return this.MappingUrls;
@@ -58,6 +70,7 @@ public class FrontServlet extends HttpServlet {
             this.setMappingUrls(MappingUrls);
             Set<String> allKey = this.getMappingUrls().keySet();
             List<Class> allClass = FrameMethodUtil.getClassesInPackage("model");  
+            this.setModelClasses(allClass);
             this.formHashMapAllPkClasses(allClass);
             int indice = 0;
            HashMap<String, Mapping> allHashMap = this.getMappingUrls();
@@ -66,7 +79,9 @@ public class FrontServlet extends HttpServlet {
                 String classe = entry.getValue().getClassName();
                 String method = entry.getValue().getMethod();
                 System.out.println("Clé : " + key + ", Class : " + classe + ", Method : " + method);
-}
+    }
+            
+            
 
         } catch (IOException ex) {        
             ex.printStackTrace();
@@ -79,6 +94,29 @@ public class FrontServlet extends HttpServlet {
         for(int i=0; i<allClass.size(); i++){
             this.formHashMapOneClass(allClass.get(i));  
         }
+    }
+    
+    public String getUrl(HttpServletRequest request) {
+        String result;
+        String contextPath = request.getContextPath();
+        String url = request.getRequestURI();
+        result = url.split(contextPath)[1];
+        String query = request.getQueryString();
+        return result;
+    }
+    
+    public Method getMethodFromUrl(String url) throws Exception {
+        List<Class> lc = getModelClasses();
+        for (Class c : lc) {
+            if (c.getSimpleName().equals(getMappingUrls().get(url).getClassName())) {
+                for (Method m : c.getDeclaredMethods()) {
+                    if (m.getName().equals(getMappingUrls().get(url).getMethod())){
+                        return m;
+                    }
+                }
+            }
+        }
+        throw new Exception("Method not found");
     }
     
     public void formHashMapOneClass(Class<?> clazz) {
@@ -94,24 +132,40 @@ public class FrontServlet extends HttpServlet {
         }
     }
     
+       public Class getClassFromUrl(String url) throws Exception {    
+        List<Class> lc = getModelClasses();
+        for (Class c : lc) {
+            if (c.getSimpleName().equals(getMappingUrls().get(url).getClassName())) {
+                for (Method m : c.getDeclaredMethods()) {
+                    if (m.getName().equals(getMappingUrls().get(url).getMethod())){
+                        return c;
+                    }
+                }
+            }
+        }
+        throw new Exception("Class not found");
+    }
+    
     
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
+            throws ServletException, IOException, Exception {
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
             /* TODO output your page here. You may use following sample code. */
-            String url = request.getRequestURL().toString();
-            String[] splitUrl = url.split("/");
-            out.println("<!DOCTYPE html>");
-            out.println("<html>");
-            out.println("<head>");
-            out.println("<title>Servlet FrontServlet</title>");            
-            out.println("</head>");
-            out.println("<body>");
-            out.println("<h1> Servlet name:" + splitUrl[3] + "</h1>");
-            out.println("<h2> Url:" + url + "</h2>");
-            out.println("</body>");
-            out.println("</html>");
+            out.println("<h1> <u>Servlet FrontServlet</u> at " + request.getContextPath() + "</h1>");
+            out.println("<h1><u>RequestURI</u> at " + request.getRequestURI()+ "</h1>");
+            out.println("<h1><u> Url </u>at " + getUrl(request) + "</h1>");
+            Method m = getMethodFromUrl(getUrl(request));   //get the method that correspond to the url key 
+            out.println("the method is : "+m.getName());
+            Class c = getClassFromUrl(getUrl(request)); //get the class that correspond to the url key 
+            out.println("the class is : "+c.getSimpleName());
+            Object o = m.invoke(c.newInstance(), null);
+            out.println(o);
+            if (o instanceof ModelView) {
+                ModelView mv = (ModelView)o;
+                RequestDispatcher dispatcher = request.getRequestDispatcher(mv.getView());
+                dispatcher.forward(request, response);
+            }
         }
     }
 
@@ -127,7 +181,11 @@ public class FrontServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+        try {
+            processRequest(request, response);
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
     }
 
     /**
@@ -141,7 +199,11 @@ public class FrontServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+        try {
+            processRequest(request, response);
+        } catch (Exception ex) {
+           ex.printStackTrace();
+        }
     }
 
     /**

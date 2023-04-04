@@ -6,14 +6,16 @@
 package model;
 
 import generalisation.annotations.Url;
+import etu1966.framework.ModelView;
 
 /**
  *
  * @author MAELA
  */
 public class Dept {
-     @Url(valeur="testDept")
-    public void testhaha(){
-        
+    @Url(valeur="/testDept")
+    public ModelView testhaha(){
+        ModelView m = new ModelView("haha.jsp");
+        return m;
     }
 }
