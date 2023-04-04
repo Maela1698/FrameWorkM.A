@@ -3,6 +3,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
 package model;
+import etu1966.framework.ModelView;
 import generalisation.annotations.Url;
 
 import generalisation.annotations.DBField;
@@ -62,9 +63,10 @@ public class Person {
     public Person() {
     }
     
-    @Url(valeur="testPerson")
-    public void testGUGU(){
-        
+    @Url(valeur="/testPerson")
+    public ModelView testGUGU(){
+        ModelView m = new ModelView("testAndrana.jsp");
+        return m;
     }
     
     
