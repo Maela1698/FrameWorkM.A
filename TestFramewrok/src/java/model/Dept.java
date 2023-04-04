@@ -7,6 +7,7 @@ package model;
 
 import generalisation.annotations.Url;
 import etu1966.framework.ModelView;
+import java.util.HashMap;
 
 /**
  *
@@ -16,6 +17,9 @@ public class Dept {
     @Url(valeur="/testDept")
     public ModelView testhaha(){
         ModelView m = new ModelView("haha.jsp");
+        String test = "test ihany ity";
+        String key = "testKey";
+        m.addItem(key, test);
         return m;
     }
 }

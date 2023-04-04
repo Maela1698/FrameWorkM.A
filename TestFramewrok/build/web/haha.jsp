@@ -5,6 +5,9 @@
 --%>
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
+<% 
+    String data = (String)request.getAttribute("testKey");
+%>
 <!DOCTYPE html>
 <html>
     <head>
@@ -12,6 +15,6 @@
         <title>JSP Page</title>
     </head>
     <body>
-        <h1>Hello World! nwuwyfguadtdudyaf</h1>
+        <h1>Hello World! <% out.print(data);%></h1>
     </body>
 </html>
