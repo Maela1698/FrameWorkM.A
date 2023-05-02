@@ -34,6 +34,8 @@ public class Dept {
     public void setNum(String num) {
         this.num = num;
     }
+    
+  
 
     public Dept(String nom, String num) {
         this.setNom(nom);
@@ -53,5 +55,7 @@ public class Dept {
     
     @Url(valeur="/saveDept")
     public void save(){
+        System.out.println("le nom:"+ this.getNom());
+        System.out.println("le num:"+ this.getNum());
     }
 }

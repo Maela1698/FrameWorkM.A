@@ -14,7 +14,7 @@
     </head>
     <body>
         <p> <% out.println(tonga); %> </p>
-        <form action="/saveDept" method="post">
+        <form action="/testFramework_M/saveDept" method="post">
             Nom : <input type="text" name="nom">
             Num : <input type="text" name="num">
             <input type="submit" value="envoyer"> 
