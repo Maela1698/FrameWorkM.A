@@ -68,21 +68,17 @@ public class FrontServlet extends HttpServlet {
         try {
             HashMap<String, Mapping> MappingUrls = new HashMap<>();
             this.setMappingUrls(MappingUrls);
-            Set<String> allKey = this.getMappingUrls().keySet();
+//            Set<String> allKey = this.getMappingUrls().keySet();
             List<Class> allClass = FrameMethodUtil.getClassesInPackage("model");  
             this.setModelClasses(allClass);
             this.formHashMapAllPkClasses(allClass);
             int indice = 0;
-           HashMap<String, Mapping> allHashMap = this.getMappingUrls();
-            for (Map.Entry<String, Mapping> entry : allHashMap.entrySet()) {
-                String key = entry.getKey();
-                String classe = entry.getValue().getClassName();
-                String method = entry.getValue().getMethod();
-                System.out.println("Clé : " + key + ", Class : " + classe + ", Method : " + method);
-    }
-            
-            
-
+            HashMap<String, Mapping> allHashMap = this.getMappingUrls();
+//            for (Map.Entry<String, Mapping> entry : allHashMap.entrySet()) {
+//                String key = entry.getKey();
+//                String classe = entry.getValue().getClassName();
+//                String method = entry.getValue().getMethod();
+//                System.out.println("Clé : " + key + ", Class : " + classe + ", Method : " + method);
         } catch (IOException ex) {        
             ex.printStackTrace();
         } catch (ClassNotFoundException ex) {
@@ -96,6 +92,18 @@ public class FrontServlet extends HttpServlet {
         }
     }
     
+    public void formHashMapOneClass(Class<?> clazz) {
+        for (Method method : clazz.getDeclaredMethods()) {
+            if (method.isAnnotationPresent(Url.class)) {
+                Mapping mapping = new Mapping();
+                mapping.setClassName(clazz.getSimpleName());
+                mapping.setMethod(method.getName());
+                String key = method.getAnnotation(Url.class).valeur();
+                this.getMappingUrls().put(key, mapping);
+            }
+        }
+    }
+    
     public String getUrl(HttpServletRequest request) {
         String result;
         String contextPath = request.getContextPath();
@@ -104,7 +112,7 @@ public class FrontServlet extends HttpServlet {
         String query = request.getQueryString();
         return result;
     }
-    
+   
     public Method getMethodFromUrl(String url) throws Exception {
         List<Class> lc = getModelClasses();
         for (Class c : lc) {
@@ -119,20 +127,7 @@ public class FrontServlet extends HttpServlet {
         throw new Exception("Method not found");
     }
     
-    public void formHashMapOneClass(Class<?> clazz) {
-        for (Method method : clazz.getDeclaredMethods()) {
-            if (method.isAnnotationPresent(Url.class)) {
-                Mapping mapping = new Mapping();
-                mapping.setClassName(clazz.getSimpleName());
-                mapping.setMethod(method.getName());
-                
-                String key = method.getAnnotation(Url.class).valeur();
-                this.getMappingUrls().put(key, mapping);
-            }
-        }
-    }
-    
-       public Class getClassFromUrl(String url) throws Exception {    
+    public Class getClassFromUrl(String url) throws Exception {    
         List<Class> lc = getModelClasses();
         for (Class c : lc) {
             if (c.getSimpleName().equals(getMappingUrls().get(url).getClassName())) {
@@ -147,8 +142,7 @@ public class FrontServlet extends HttpServlet {
     }
     
     
-    protected void processRequest(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException, Exception {
+    protected void processRequest(HttpServletRequest request, HttpServletResponse response)throws ServletException, IOException, Exception {
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
             /* TODO output your page here. You may use following sample code. */
@@ -159,17 +153,20 @@ public class FrontServlet extends HttpServlet {
             out.println("the method is : "+m.getName());
             Class c = getClassFromUrl(getUrl(request)); //get the class that correspond to the url key 
             out.println("the class is : "+c.getSimpleName());
-            Object o = m.invoke(c.newInstance(), null);
-            out.println(o);
+            Object object = c.getDeclaredConstructor(new Class[0]).newInstance(new Object[0]);
+            Object o = m.invoke(object, new Object[0] );
             if (o instanceof ModelView) {
                 ModelView mv = (ModelView)o;
                 HashMap<String,Object> data = mv.getData();
                 for (Map.Entry<String, Object> entry : data.entrySet()) {
                     request.setAttribute(entry.getKey(), entry.getValue());
+                    System.out.println(entry.getKey()+ ","+ entry.getValue());
                 }
                 RequestDispatcher dispatcher = request.getRequestDispatcher(mv.getView());
                 dispatcher.forward(request, response);
             }
+            
+            
         }
     }
 

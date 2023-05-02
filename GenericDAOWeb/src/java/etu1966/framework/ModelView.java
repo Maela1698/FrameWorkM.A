@@ -41,6 +41,4 @@ public class ModelView {
     public void addItem(String key,Object value){
         this.getData().put(key, value);
     }
-    
-    
 }
