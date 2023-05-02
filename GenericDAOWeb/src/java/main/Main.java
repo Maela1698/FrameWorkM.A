@@ -24,6 +24,9 @@ public class Main {
 //        List<Person> objets = genericDAO.getAll(test, null, null);
 //        for (int i = 0; i < objets.size(); i++) {
 //            System.out.println((objets.get(i)).getNom());
+        String haha= "haha";
+        String strCapitalized = haha.substring(0,1).toUpperCase() + haha.substring(1);
+        System.out.print(strCapitalized);
         }
     }
 
