@@ -1,22 +1,23 @@
 /*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package generalisation.utils;
-    import java.io.File;
+package etu1966.framework;
+
+import java.io.File;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+
 /**
  *
- * @author MAELA
+ * @author M.Andriamahery
  */
 public class FrameMethodUtil {
-    public static List<Class> getClassesInPackage(String packageName) throws ClassNotFoundException {
+     public static List<Class> getClassesInPackage(String packageName) throws ClassNotFoundException {
         List<Class> classes = new ArrayList<Class>();
         String path = packageName.replace(".", "/");
         ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
@@ -57,5 +58,5 @@ public class FrameMethodUtil {
         String[] valeur = parameters.get(parameter);
         Object set = setter.invoke(object, valeur);
     }
-
+    
 }

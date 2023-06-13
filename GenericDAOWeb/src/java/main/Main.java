@@ -7,7 +7,7 @@ package main;
 import generalisation.connection.DBConnection;
 import generalisation.genericDAO.genericDAO;
 import java.util.List;
-import generalisation.utils.FrameMethodUtil;
+import etu1966.framework.FrameMethodUtil;
 import java.sql.Connection;
 //import model.Person;
 /**
