@@ -1,0 +1,5 @@
+Sprint 7 
+Objectif : Maka donné azo avy any amin'ny view(formulaire)
+-Ao anaty class misy attribue mitovy amin'ny anaran'ny formulaire ex : input name="nom" ,attribut = "nom"
+-Ao anaty processRequest* mampitovy ny anaran'ny attribut sy ny formulaire,rehefa mitovy ilay izy dia mi-set  
+ny valeur azo avy any amin'ny formulaire ao anatin'ilay attribut an'ilay class

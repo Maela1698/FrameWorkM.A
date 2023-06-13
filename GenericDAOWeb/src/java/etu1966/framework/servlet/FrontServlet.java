@@ -8,16 +8,16 @@ package etu1966.framework.servlet;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.HashMap;
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServlet;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
+import jakarta.servlet.ServletException;
+import jakarta.servlet.http.HttpServlet;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import etu1966.framework.Mapping;
 import etu1966.framework.ModelView;
 import generalisation.annotations.Url;
-import generalisation.utils.FrameMethodUtil;
+import etu1966.framework.FrameMethodUtil;
 import java.lang.reflect.Field;
-import javax.servlet.RequestDispatcher;
+import jakarta.servlet.RequestDispatcher;
 import java.lang.reflect.Method;
 import java.util.List;
 import java.util.Map;
@@ -145,15 +145,22 @@ public class FrontServlet extends HttpServlet {
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
             /* TODO output your page here. You may use following sample code. */
-            out.println("<h1><u> Url </u>at " + getUrl(request) + "</h1>");
+            out.println("<h1><u> Url </u>at haha " + getUrl(request) + "</h1>");
             Method m = getMethodFromUrl(getUrl(request));   //get the method that correspond to the url key 
+            System.out.println("La methode "+ m.getName());
             Class c = getClassFromUrl(getUrl(request)); //get the class that correspond to the url key 
+            System.out.println("La classe "+ c.getSimpleName());
             Object object = c.getDeclaredConstructor(new Class[0]).newInstance(new Object[0]);
             Field[] attributes = c.getDeclaredFields(); // get allFields of the class 
+            System.out.println("les attributs de la classe");
+            for(int i=0 ; i<attributes.length; i++){
+                System.out.println(attributes[i].getName());
+            }
             Map<String, String[]> parameters = request.getParameterMap();
             for(String parameter : parameters.keySet()){
                 for(Field attribut : attributes){
                     if(parameter.equals(attribut.getName())){
+                        System.out.println("ok ao  izy");
                         FrameMethodUtil.setValeur(attribut, c, parameters, parameter, object);
                     }
                 }
@@ -163,25 +170,19 @@ public class FrontServlet extends HttpServlet {
             
         }
     }
-    
     //function to redirect page to the view set in the ModelView
     public void dispatchToView(HttpServletRequest request, HttpServletResponse response,Object o)throws ServletException, IOException, Exception {
-        if (o instanceof ModelView) {
+        if (o instanceof ModelView) { 
             ModelView mv = (ModelView)o;
             HashMap<String,Object> data = mv.getData();
             for (Map.Entry<String, Object> entry : data.entrySet()) {
                 request.setAttribute(entry.getKey(), entry.getValue());
-                System.out.println(entry.getKey()+ ","+ entry.getValue());
+                System.out.println(entry.getKey()+ ","+ entry.getValue()+"haha");
             }
             RequestDispatcher dispatcher = request.getRequestDispatcher(mv.getView());
             dispatcher.forward(request, response);
         }
     }
-    
-   
-    
-    
-
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**
      * Handles the HTTP <code>GET</code> method.
@@ -228,5 +229,4 @@ public class FrontServlet extends HttpServlet {
     public String getServletInfo() {
         return "Short description";
     }// </editor-fold>
-
 }
