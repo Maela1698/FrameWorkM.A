@@ -19,6 +19,7 @@ import etu1966.framework.FrameMethodUtil;
 import java.lang.reflect.Field;
 import jakarta.servlet.RequestDispatcher;
 import java.lang.reflect.Method;
+import java.lang.reflect.Parameter;
 import java.util.List;
 import java.util.Map;
 
@@ -146,28 +147,28 @@ public class FrontServlet extends HttpServlet {
         try (PrintWriter out = response.getWriter()) {
             /* TODO output your page here. You may use following sample code. */
             out.println("<h1><u> Url </u>at haha " + getUrl(request) + "</h1>");
-            Method m = getMethodFromUrl(getUrl(request));   //get the method that correspond to the url key 
+            Method m = getMethodFromUrl(getUrl(request));   //get the method that correspond to the url key
+            Parameter[] mParameters = m.getParameters();    //les parametres du methode 
+            for(Parameter param : mParameters){
+                System.out.println(param.getName());
+            }
             System.out.println("La methode "+ m.getName());
             Class c = getClassFromUrl(getUrl(request)); //get the class that correspond to the url key 
             System.out.println("La classe "+ c.getSimpleName());
             Object object = c.getDeclaredConstructor(new Class[0]).newInstance(new Object[0]);
             Field[] attributes = c.getDeclaredFields(); // get allFields of the class 
-            System.out.println("les attributs de la classe");
-            for(int i=0 ; i<attributes.length; i++){
-                System.out.println(attributes[i].getName());
-            }
             Map<String, String[]> parameters = request.getParameterMap();
             for(String parameter : parameters.keySet()){
                 for(Field attribut : attributes){
                     if(parameter.equals(attribut.getName())){
-                        System.out.println("ok ao  izy");
+//                        System.out.println("ok ao  izy");
                         FrameMethodUtil.setValeur(attribut, c, parameters, parameter, object);
                     }
                 }
             }
-            Object o = m.invoke(object, new Object[0] );
-            this.dispatchToView(request, response, o);
-            
+            String[] methodArgument = FrameMethodUtil.formMethodArgument(mParameters,parameters);
+            Object o = m.invoke(object,methodArgument);
+            this.dispatchToView(request, response, o);   
         }
     }
     //function to redirect page to the view set in the ModelView
@@ -177,7 +178,7 @@ public class FrontServlet extends HttpServlet {
             HashMap<String,Object> data = mv.getData();
             for (Map.Entry<String, Object> entry : data.entrySet()) {
                 request.setAttribute(entry.getKey(), entry.getValue());
-                System.out.println(entry.getKey()+ ","+ entry.getValue()+"haha");
+                System.out.println(entry.getKey()+ ","+ entry.getValue()+"hahaio");
             }
             RequestDispatcher dispatcher = request.getRequestDispatcher(mv.getView());
             dispatcher.forward(request, response);
