@@ -8,6 +8,7 @@ import java.io.File;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.lang.reflect.Parameter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -45,18 +46,30 @@ public class FrameMethodUtil {
         return null;
     }
     
-    public static String formMethodName(String field){
-        String strCapitalized = field.substring(0,1).toUpperCase() + field.substring(1);
-        return "set"+strCapitalized;
-    }
-    
-    
-    
     public static void setValeur(Field attribut,Class c,  Map<String, String[]> parameters, String parameter,Object object) throws IllegalAccessException, InvocationTargetException{
-        String methodName = FrameMethodUtil.formMethodName(attribut.getName());
+        String methodName = "set"+attribut.getName().toLowerCase();  //methode setter d'un attribut de classe
         Method setter = FrameMethodUtil.getSetMethod(c, methodName);
-        String[] valeur = parameters.get(parameter);
-        Object set = setter.invoke(object, valeur);
+        String[] valeur = parameters.get(parameter); //
+        setter.invoke(object, valeur);
+    }
+
+    //former les arguments dont une fonction a besoin
+    public static String[] formMethodArgument(Parameter[] mParameters, Map<String, String[]> requestParameters) {
+        List<String> arguments = new ArrayList<>();
+        for(Parameter mParameter : mParameters ){
+            for(String requestParameter : requestParameters.keySet()){
+                if(mParameter.getName().equals(requestParameter)){
+                    arguments.add(requestParameters.get(requestParameter)[0]);
+                }
+            }
+        }
+        String[] trueArguments = new String[arguments.size()];
+        int indexTrueArguments = 0;
+        for(String argument : arguments){
+            trueArguments[indexTrueArguments] =argument;
+            indexTrueArguments ++;
+        }
+        return trueArguments;
     }
     
 }
