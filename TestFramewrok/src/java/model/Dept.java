@@ -58,7 +58,7 @@ public class Dept {
         System.out.println("le nom:"+ this.getNom());
         System.out.println("le num:"+ this.getNum());
     }
-    
+  
     @Url(valeur="/form8")
     public ModelView testSprint8(){
         ModelView m = new ModelView("form8.jsp");

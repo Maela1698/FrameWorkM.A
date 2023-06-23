@@ -39,7 +39,7 @@ public class FrameMethodUtil {
     
     public static Method getSetMethod(Class c, String methodName){
         for(Method m : c.getDeclaredMethods()){
-            if(m.getName().equals(methodName)){
+            if(m.getName().toLowerCase().equals(methodName)){
                 return m;
             }
         }
@@ -48,7 +48,9 @@ public class FrameMethodUtil {
     
     public static void setValeur(Field attribut,Class c,  Map<String, String[]> parameters, String parameter,Object object) throws IllegalAccessException, InvocationTargetException{
         String methodName = "set"+attribut.getName().toLowerCase();  //methode setter d'un attribut de classe
+//        System.out.println("methodname------------------"+methodName+"haha");
         Method setter = FrameMethodUtil.getSetMethod(c, methodName);
+//        System.out.println("simpleNameMethode------------"+setter.getName());
         String[] valeur = parameters.get(parameter); //
         setter.invoke(object, valeur);
     }
