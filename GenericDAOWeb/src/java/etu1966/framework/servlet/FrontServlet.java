@@ -161,13 +161,13 @@ public class FrontServlet extends HttpServlet {
             for(String parameter : parameters.keySet()){
                 for(Field attribut : attributes){
                     if(parameter.equals(attribut.getName())){
-//                        System.out.println("ok ao  izy");
+                        System.out.println("ok ao  izy");
                         FrameMethodUtil.setValeur(attribut, c, parameters, parameter, object);
                     }
                 }
             }
             String[] methodArgument = FrameMethodUtil.formMethodArgument(mParameters,parameters);
-            Object o = m.invoke(object,methodArgument);
+            Object o = m.invoke(object,new Object[0]);
             this.dispatchToView(request, response, o);   
         }
     }

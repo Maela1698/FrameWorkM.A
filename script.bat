@@ -18,8 +18,8 @@ cd ../../
 jar -cf fw.jar -C .\GenericDAOWeb\build\web\WEB-INF\classes\ etu1966
 
 set tomcat_root=C:\mywebserver\apache-tomcat-10.0.20
-set project_root=C:\Users\ASUS\Documents\GitHub\FrameWorkM.A\TestFramewrok
-set fw_root=C:\Users\ASUS\Documents\GitHub\FrameWorkM.A\GenericDAOWeb
+set project_root=D:\Etude\Github\FrameWorkM.A\TestFramewrok
+set fw_root=D:\Etude\Github\FrameWorkM.A\GenericDAOWeb
 set lib_root=.\temp\WEB-INF\lib\fw.jar
 
 :: Compilation du modele
