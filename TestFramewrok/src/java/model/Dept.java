@@ -16,6 +16,7 @@ import java.util.HashMap;
 public class Dept {
     String nom;
     String num;
+    String[] langue;
 
     public String getNom() {
         return nom;
@@ -23,7 +24,7 @@ public class Dept {
 
     public void setNom(String nom) {
         this.nom = nom;
-    }
+    }  
     
     
 
@@ -74,6 +75,9 @@ public class Dept {
         System.out.println("laharana"+laharana);
         System.out.println("anarana"+anarana);
     }
+    
+    
+    
     
     
 }
