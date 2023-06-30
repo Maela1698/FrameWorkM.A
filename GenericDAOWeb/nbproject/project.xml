@@ -19,7 +19,10 @@
                     <path-in-war>WEB-INF/lib</path-in-war>
                 </library>
                 <library dirs="200">
-                    <file>${file.reference.servlet-api.jar-1}</file>
+                    <file>${&lt;&lt;&lt;&lt;&lt;&lt;&lt; Updated upstream}</file>
+                </library>
+                <library dirs="200">
+                    <file>${file.reference.servlet-api.jar-2}</file>
                     <path-in-war>WEB-INF/lib</path-in-war>
                 </library>
                 <library dirs="200">

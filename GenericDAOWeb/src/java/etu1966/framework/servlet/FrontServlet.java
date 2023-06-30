@@ -149,9 +149,9 @@ public class FrontServlet extends HttpServlet {
             out.println("<h1><u> Url </u>at haha " + getUrl(request) + "</h1>");
             Method m = getMethodFromUrl(getUrl(request));   //get the method that correspond to the url key
             Parameter[] mParameters = m.getParameters();    //les parametres du methode 
-            for(Parameter param : mParameters){
-                System.out.println(param.getName());
-            }
+//            for(Parameter param : mParameters){
+//                System.out.println(param.getName());
+//            }
             System.out.println("La methode "+ m.getName());
             Class c = getClassFromUrl(getUrl(request)); //get the class that correspond to the url key 
             System.out.println("La classe "+ c.getSimpleName());
@@ -167,18 +167,27 @@ public class FrontServlet extends HttpServlet {
                 }
             }
             String[] methodArgument = FrameMethodUtil.formMethodArgument(mParameters,parameters);
-            Object o = m.invoke(object,new Object[0]);
-            this.dispatchToView(request, response, o);   
+            for(String argument : methodArgument ){
+                System.out.println("argument:"+ argument);
+            }
+            Object o = new Object();
+            if(methodArgument != null){                         //si methodeArgument est different de nulle then Sprint8 (fonction avec argument)
+                o = m.invoke(object,methodArgument);
+            }
+            else{
+                o = m.invoke(object,new Object[0]);         //sinon : sprint7 (fonction sans argument)
+            }
+            this.dispatchToView(request, response, o);   //dispatch   
         }
     }
     //function to redirect page to the view set in the ModelView
     public void dispatchToView(HttpServletRequest request, HttpServletResponse response,Object o)throws ServletException, IOException, Exception {
         if (o instanceof ModelView) { 
             ModelView mv = (ModelView)o;
-            HashMap<String,Object> data = mv.getData();
-            for (Map.Entry<String, Object> entry : data.entrySet()) {
+            HashMap<String,Object> data = mv.getData();                   //getter tous les dataa(hashMap) du modelView mv
+            for (Map.Entry<String, Object> entry : data.entrySet()) {    //boucler le data et setter attribute pour chaque element          
                 request.setAttribute(entry.getKey(), entry.getValue());
-                System.out.println(entry.getKey()+ ","+ entry.getValue()+"hahaio");
+                System.out.println(entry.getKey()+ ","+ entry.getValue());
             }
             RequestDispatcher dispatcher = request.getRequestDispatcher(mv.getView());
             dispatcher.forward(request, response);
