@@ -19,19 +19,12 @@
                     <path-in-war>WEB-INF/lib</path-in-war>
                 </library>
                 <library dirs="200">
-                    <file>${file.reference.servlet-api.jar-1}</file>
-                    <path-in-war>WEB-INF/lib</path-in-war>
-                </library>
-<<<<<<< Updated upstream
-=======
-                <library dirs="200">
                     <file>${&lt;&lt;&lt;&lt;&lt;&lt;&lt; Updated upstream}</file>
                 </library>
                 <library dirs="200">
-                    <file>${file.reference.servlet-api.jar-3}</file>
+                    <file>${file.reference.servlet-api.jar-2}</file>
                     <path-in-war>WEB-INF/lib</path-in-war>
                 </library>
->>>>>>> Stashed changes
             </web-module-libraries>
             <web-module-additional-libraries/>
             <source-roots>

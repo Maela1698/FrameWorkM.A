@@ -167,9 +167,8 @@ public class FrontServlet extends HttpServlet {
                 }
             }
             String[] methodArgument = FrameMethodUtil.formMethodArgument(mParameters,parameters);
-<<<<<<< Updated upstream
             Object o = m.invoke(object,methodArgument);
-=======
+
             for(String argument : methodArgument ){
                 System.out.println("argument:"+ argument);
             }
@@ -180,8 +179,6 @@ public class FrontServlet extends HttpServlet {
             else{
                 o = m.invoke(object,new Object[0]);         //sinon : sprint7 (fonction sans argument)
             }
-            
->>>>>>> Stashed changes
             this.dispatchToView(request, response, o);   
         }
     }
