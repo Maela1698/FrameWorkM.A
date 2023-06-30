@@ -59,12 +59,9 @@ public class Dept {
         System.out.println("le nom:"+ this.getNom());
         System.out.println("le num:"+ this.getNum());
     }
-<<<<<<< Updated upstream
-    
-=======
+
   
-    //Test Sprint8
->>>>>>> Stashed changes
+    //Test Sprin8
     @Url(valeur="/form8")
     public ModelView testSprint8(){
         ModelView m = new ModelView("form8.jsp");

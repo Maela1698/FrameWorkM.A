@@ -167,8 +167,6 @@ public class FrontServlet extends HttpServlet {
                 }
             }
             String[] methodArgument = FrameMethodUtil.formMethodArgument(mParameters,parameters);
-            Object o = m.invoke(object,methodArgument);
-
             for(String argument : methodArgument ){
                 System.out.println("argument:"+ argument);
             }
