@@ -53,16 +53,18 @@ public class Dept {
         return m;
     }
     
+    //Test Sprint7
     @Url(valeur="/saveDept")
     public void save(){
         System.out.println("le nom:"+ this.getNom());
         System.out.println("le num:"+ this.getNum());
     }
-    
+  
+    //Test Sprint8
     @Url(valeur="/form8")
     public ModelView testSprint8(){
         ModelView m = new ModelView("form8.jsp");
-        String test = "Sprint8";
+        String test = "Sprint8 Test";
         String key = "cleSprint8";
         m.addItem(key, test);
         return m;
