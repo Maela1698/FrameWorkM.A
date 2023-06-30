@@ -167,9 +167,6 @@ public class FrontServlet extends HttpServlet {
                 }
             }
             String[] methodArgument = FrameMethodUtil.formMethodArgument(mParameters,parameters);
-            for(String argument : methodArgument ){
-                System.out.println("argument:"+ argument);
-            }
             Object o = new Object();
             if(methodArgument != null){                         //si methodeArgument est different de nulle then Sprint8 (fonction avec argument)
                 o = m.invoke(object,methodArgument);
