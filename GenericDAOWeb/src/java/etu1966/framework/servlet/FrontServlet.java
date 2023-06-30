@@ -177,7 +177,7 @@ public class FrontServlet extends HttpServlet {
             else{
                 o = m.invoke(object,new Object[0]);         //sinon : sprint7 (fonction sans argument)
             }
-            this.dispatchToView(request, response, o);   
+            this.dispatchToView(request, response, o);   //dispatch   
         }
     }
     //function to redirect page to the view set in the ModelView
