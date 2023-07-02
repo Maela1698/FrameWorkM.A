@@ -32,8 +32,12 @@ public class Emp {
         this.dept = dept;
     }
 
+    
     public Emp() {
+        
     }
+    
+    
     
     
    

@@ -7,9 +7,12 @@ package model;
 
 
 import etu1966.annotations.Auth;
+import etu1966.annotations.session;
 import etu1966.framework.ModelView;
 import etu1966.annotations.Url;
 import etu1966.annotations.Scope;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  *
@@ -20,6 +23,7 @@ public class Dept {
     String nom;
     String num;
     String[] langue;
+    HashMap<String,Object> session;
 
     public String getNom() {
         return nom;
@@ -46,6 +50,14 @@ public class Dept {
     public void setLangue(String[] langue) {
         this.langue = langue;
     }
+
+    public HashMap<String, Object> getSession() {
+        return session;
+    }
+
+    public void setSession(HashMap<String, Object> session) {
+        this.session = session;
+    }
     
     
     
@@ -57,7 +69,10 @@ public class Dept {
         this.setLangue(langue);
     }
 
-    public Dept(){ }
+    public Dept(){ 
+        HashMap<String, Object> allSession = new HashMap<>();
+        this.setSession(allSession);
+    }
     
     @Url(valeur="/testDept")
     public ModelView testhaha(){
@@ -135,9 +150,24 @@ public class Dept {
         return m;
     }
     
+    @session
+    @Url(valeur="/reservationTerrain")
+    public ModelView reservationTerrain(){
+        ModelView view = new ModelView("reservationTerrain.jsp");
+        HashMap<String,Object> allSessions = this.getSession();                 //charger tous les sesssion de qu'on a ajouter dans cette classe
+        String key = "testSprint12";
+        System.out.println("tous les sessions dans le serveur:"+allSessions);
+        String value = (String)allSessions.get("kindy");
+        
+        view.addItem(key, value);
+        return view;
+    }
     
-    
-    
-    
-    
+    @Url(valeur="/addSessionEmp")
+    public ModelView addSessionEmp(){
+        ModelView view = new ModelView("addSessionEmp.jsp");
+        String huhu = "EMP1902";
+        view.addSession("kindy", huhu);
+        return view;
+    }
 }

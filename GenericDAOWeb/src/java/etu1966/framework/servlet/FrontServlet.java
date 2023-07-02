@@ -18,12 +18,16 @@ import etu1966.annotations.Url;
 import etu1966.annotations.Auth;
 import etu1966.framework.FrameMethodUtil;
 import etu1966.annotations.Scope;
+import etu1966.annotations.session;
 import java.lang.reflect.Field;
 import jakarta.servlet.RequestDispatcher;
 import jakarta.servlet.ServletConfig;
 import jakarta.servlet.http.HttpSession;
 import java.lang.reflect.Method;
 import java.lang.reflect.Parameter;
+import java.lang.reflect.ParameterizedType;
+import java.lang.reflect.Type;
+import java.util.Enumeration;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -37,6 +41,7 @@ public class FrontServlet extends HttpServlet {
     HashMap<String,Mapping> MappingUrls;
     List<Class> modelClasses;
     HashMap<Class<?>,Object> instance;
+    HashMap<String,Object> sessions;
 
     public List<Class> getModelClasses() {
         return modelClasses;
@@ -61,6 +66,16 @@ public class FrontServlet extends HttpServlet {
     public void setInstance(HashMap<Class<?>, Object> instance) {
         this.instance = instance;
     }
+
+    public HashMap<String, Object> getSessions() {
+        return sessions;
+    }
+
+    public void setSessions(HashMap<String, Object> sessions) {
+        this.sessions = sessions;
+    }
+    
+    
     
     
     
@@ -132,10 +147,14 @@ public class FrontServlet extends HttpServlet {
    
     public Method getMethodFromUrl(String url) throws Exception {
         List<Class> lc = getModelClasses();
+        System.out.println("la classecorrespondant a l'url "+url + " est :" +getMappingUrls().get(url).getClassName());
         for (Class c : lc) {
+            
             if (c.getSimpleName().equals(getMappingUrls().get(url).getClassName())) {
+//                System.out.println(">>>>>>>>>>>>>>>>"+getMappingUrls().get(url).getClassName());
                 for (Method m : c.getDeclaredMethods()) {
                     if (m.getName().equals(getMappingUrls().get(url).getMethod())){
+                        System.out.println(">>>>>>>>>>>>>>>>"+getMappingUrls().get(url).getClassName());
                         return m;
                     }
                 }
@@ -166,6 +185,7 @@ public class FrontServlet extends HttpServlet {
         try (PrintWriter out = response.getWriter()) {
             out.println("<h1><u> Url </u>at haha " + getUrl(request) + "</h1>");
             Method m = getMethodFromUrl(getUrl(request));   //get the method that correspond to the url key
+            
             Parameter[] mParameters = m.getParameters();    //les parametres du methode 
             
             System.out.println("La methode "+ m.getName());
@@ -184,15 +204,21 @@ public class FrontServlet extends HttpServlet {
                     FrameMethodUtil.reinitialize(c,object);
                 }
             }
+            HttpSession session = request.getSession();
+            
+            if(m.isAnnotationPresent(session.class)){
+                System.out.println("Ye mila anle session io classe io " + c.getSimpleName());
+                this.addSessionToClass(c,request,object);
+            }
             
             ServletConfig config = getServletConfig();
             String sessionConnected = config.getInitParameter("auth-connectedOnly");
             String sessionConnectedProfile = config.getInitParameter("auth-connectedProfile");
 //            System.out.println("----------- le nom de session profile dans le webxml :"+sessionConnectedProfile);
-            HttpSession session = request.getSession();
+            
+            
             try{   
                 if(m.isAnnotationPresent(Auth.class)){
-                    
                     Auth annotation = m.getAnnotation(Auth.class);
                     if(annotation.value().length() > 0 ){
                         String annotationValue = annotation.value();
@@ -267,7 +293,7 @@ public class FrontServlet extends HttpServlet {
             if(sessionMv != null){
                 for(Map.Entry<String,Object> entry : sessionMv.entrySet()){         //setter attribute du Servlet pour chaque element du sessionn
                     System.out.println(">>>>>>>>>>>>>>>>>>> sessionName: "+ entry);
-                    session.setAttribute(entry.getKey(), true);             //ajouter les session du modelView dans le session de ce Servlet
+                    session.setAttribute(entry.getKey(), entry.getValue());             //ajouter les session du modelView dans le session de ce Servlet
                 }
             }
             RequestDispatcher dispatcher = request.getRequestDispatcher(mv.getView());
@@ -324,4 +350,33 @@ public class FrontServlet extends HttpServlet {
     public String getServletInfo() {
         return "Short description";
     }// </editor-fold>
+
+    public void addSessionToClass(Class c,HttpServletRequest request,Object o) throws NoSuchMethodException {
+        try{
+            HttpSession thisSession = request.getSession();
+            Method m = null;
+            
+            for(Method method : c.getDeclaredMethods()){
+                if(method.getName().equals("setSession")){
+                    m = method;
+                }
+            }
+            System.out.println("la methode pour setter les session de cette classe " + c.getSimpleName() + " est :" + m.getName() );
+            
+            HashMap<String, Object> allSession = new HashMap<>();
+            Enumeration<String> attributeNames = thisSession.getAttributeNames();
+            
+            while (attributeNames.hasMoreElements()) {
+                String attributeName = attributeNames.nextElement();
+                Object attributeValue = thisSession.getAttribute(attributeName);
+                allSession.put(attributeName, attributeValue);
+            }
+            System.out.println("begin");
+            m.invoke(o, allSession);
+            System.out.println("end");
+        }
+        catch(Exception e){
+            e.printStackTrace();
+        }
+    }
 }

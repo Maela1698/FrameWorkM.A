@@ -41,3 +41,5 @@ copy test_fw.war %tomcat_root%\webapps\
 :: Supprimer le dossier temp
 ::rmdir /S /Q .\temp
 
+
+
