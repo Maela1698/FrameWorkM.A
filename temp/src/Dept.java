@@ -157,8 +157,7 @@ public class Dept {
         HashMap<String,Object> allSessions = this.getSession();                 //charger tous les sesssion de qu'on a ajouter dans cette classe
         String key = "testSprint12";
         System.out.println("tous les sessions dans le serveur:"+allSessions);
-        String value = (String)allSessions.get("kindy");
-        
+        String value = (String)allSessions.get("idEmp");
         view.addItem(key, value);
         return view;
     }
@@ -167,7 +166,7 @@ public class Dept {
     public ModelView addSessionEmp(){
         ModelView view = new ModelView("addSessionEmp.jsp");
         String huhu = "EMP1902";
-        view.addSession("kindy", huhu);
+        view.addSession("idEmp", huhu);
         return view;
     }
 }
