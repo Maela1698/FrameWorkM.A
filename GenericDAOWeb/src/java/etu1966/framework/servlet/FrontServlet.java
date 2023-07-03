@@ -158,11 +158,11 @@ public class FrontServlet extends HttpServlet {
             Object object = c.getDeclaredConstructor(new Class[0]).newInstance(new Object[0]);
             Field[] attributes = c.getDeclaredFields(); // get allFields of the class 
             Map<String, String[]> parameters = request.getParameterMap();
-            for(String parameter : parameters.keySet()){
+            for(String key : parameters.keySet()){
                 for(Field attribut : attributes){
-                    if(parameter.equals(attribut.getName())){
+                    if(key.equals(attribut.getName())){
                         System.out.println("ok ao  izy");
-                        FrameMethodUtil.setValeur(attribut, c, parameters, parameter, object);
+                        FrameMethodUtil.setValeur(attribut, c, parameters, key, object);
                     }
                 }
             }

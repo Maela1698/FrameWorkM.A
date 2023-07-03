@@ -35,12 +35,23 @@ public class Dept {
     public void setNum(String num) {
         this.num = num;
     }
+
+    public String[] getLangue() {
+        return langue;
+    }
+
+    public void setLangue(String[] langue) {
+        this.langue = langue;
+    }
+    
+    
     
   
 
-    public Dept(String nom, String num) {
+    public Dept(String nom, String num, String[] langue) {
         this.setNom(nom);
         this.setNum(num);
+        this.setLangue(langue);
     }
 
     public Dept(){ }

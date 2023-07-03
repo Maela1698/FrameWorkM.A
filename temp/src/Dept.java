@@ -35,12 +35,23 @@ public class Dept {
     public void setNum(String num) {
         this.num = num;
     }
+
+    public String[] getLangue() {
+        return langue;
+    }
+
+    public void setLangue(String[] langue) {
+        this.langue = langue;
+    }
+    
+    
     
   
 
-    public Dept(String nom, String num) {
+    public Dept(String nom, String num, String[] langue) {
         this.setNom(nom);
         this.setNum(num);
+        this.setLangue(langue);
     }
 
     public Dept(){ }
@@ -60,8 +71,9 @@ public class Dept {
         System.out.println("le nom:"+ this.getNom());
         System.out.println("le num:"+ this.getNum());
     }
+
   
-    //Test Sprint8
+    //Test Sprin8
     @Url(valeur="/form8")
     public ModelView testSprint8(){
         ModelView m = new ModelView("form8.jsp");
