@@ -29,13 +29,6 @@
                     <file>${file.reference.servlet-api.jar-2}</file>
                     <path-in-war>WEB-INF/lib</path-in-war>
                 </library>
-<<<<<<< Updated upstream
-=======
-                <library dirs="200">
-                    <file>${file.reference.servlet-api.jar-3}</file>
-                    <path-in-war>WEB-INF/lib</path-in-war>
-                </library>
->>>>>>> Stashed changes
             </web-module-libraries>
             <web-module-additional-libraries/>
             <source-roots>

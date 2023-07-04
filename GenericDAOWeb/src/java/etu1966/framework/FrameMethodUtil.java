@@ -12,6 +12,8 @@ import java.lang.reflect.Parameter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  *
@@ -46,13 +48,14 @@ public class FrameMethodUtil {
         return null;
     }
     
-    public static void setValeur(Field attribut,Class c,  Map<String, String[]> parameters, String parameter,Object object) throws IllegalAccessException, InvocationTargetException{
+    public static void setValeur(Field attribut,Class c,  Map<String, String[]> parameters, String key,Object object, String keyLetterOnly) throws IllegalAccessException, InvocationTargetException, NoSuchMethodException{
         String methodName = "set"+attribut.getName().toLowerCase();  //methode setter d'un attribut de classe
-//        System.out.println("methodname------------------"+methodName+"haha");
         Method setter = FrameMethodUtil.getSetMethod(c, methodName);
-//        System.out.println("simpleNameMethode------------"+setter.getName());
-        String[] valeur = parameters.get(parameter); //
-        setter.invoke(object, valeur);
+        String[] valeur = parameters.get(key); //       
+        for(String value : valeur){
+            System.out.println(">>>"+ value);
+        }
+        setter.invoke(object, attribut.getType().isArray()? valeur : valeur[0]); //verifier si la valeur 
     }
 
     //former les arguments dont une fonction a besoin
@@ -73,5 +76,29 @@ public class FrameMethodUtil {
         }
         return trueArguments;
     }
-    
+
+
+
+    public static String formParamName(String key) {
+        // Définition de l'expression régulière pour trouver les lettres et les chiffres (a-zA-Z0-9)
+        String regex = "[a-zA-Z0-9]+";
+
+        // Création du Pattern à partir de l'expression régulière
+        Pattern pattern = Pattern.compile(regex);
+
+        // Création du Matcher à partir de la clé fournie
+        Matcher matcher = pattern.matcher(key);
+
+        // Variable pour stocker le résultat
+        StringBuilder result = new StringBuilder();
+
+        // Recherche des correspondances dans la chaîne
+        while (matcher.find()) {
+            // Ajout de chaque correspondance (lettre ou chiffre) à la variable résultat
+            result.append(matcher.group());
+        }
+
+        // Conversion du StringBuilder en chaîne de caractères et retour
+        return result.toString();
+    }
 }

@@ -35,12 +35,23 @@ public class Dept {
     public void setNum(String num) {
         this.num = num;
     }
+
+    public String[] getLangue() {
+        return langue;
+    }
+
+    public void setLangue(String[] langue) {
+        this.langue = langue;
+    }
+    
+    
     
   
 
-    public Dept(String nom, String num) {
+    public Dept(String nom, String num, String[] langue) {
         this.setNom(nom);
         this.setNum(num);
+        this.setLangue(langue);
     }
 
     public Dept(){ }
@@ -57,8 +68,14 @@ public class Dept {
     //Test Sprint7
     @Url(valeur="/saveDept")
     public void save(){
-        System.out.println("le nom:"+ this.getNom());
-        System.out.println("le num:"+ this.getNum());
+        System.out.println("le nom mety: "+ this.getNom());
+        System.out.println("le num mety:"+ this.getNum());
+        String[] langue = this.getLangue();
+        int i=0;
+        for(String oneLangue : langue){
+            System.out.println("lange "+i+ " "+oneLangue);
+            i++;
+        }
     }
 
   
