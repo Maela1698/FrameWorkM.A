@@ -155,14 +155,16 @@ public class FrontServlet extends HttpServlet {
             System.out.println("La methode "+ m.getName());
             Class c = getClassFromUrl(getUrl(request)); //get the class that correspond to the url key 
             System.out.println("La classe "+ c.getSimpleName());
-            Object object = c.getDeclaredConstructor(new Class[0]).newInstance(new Object[0]);
+            Object object = c.getConstructor().newInstance();
             Field[] attributes = c.getDeclaredFields(); // get allFields of the class 
             Map<String, String[]> parameters = request.getParameterMap();
             for(String key : parameters.keySet()){
+                String keyLetterOnly = FrameMethodUtil.formParamName(key);      //enlever les caracteres speciaux du nom des key
+                System.out.println("---------------"+keyLetterOnly);
+//                System.out.println("-----------------------: "+key);
                 for(Field attribut : attributes){
-                    if(key.equals(attribut.getName())){
-                        System.out.println("ok ao  izy");
-                        FrameMethodUtil.setValeur(attribut, c, parameters, key, object);
+                    if(keyLetterOnly.equals(attribut.getName())){
+                        FrameMethodUtil.setValeur(attribut, c, parameters, key, object,keyLetterOnly);
                     }
                 }
             }

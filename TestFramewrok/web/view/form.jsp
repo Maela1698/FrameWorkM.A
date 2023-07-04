@@ -17,6 +17,20 @@
         <form action="saveDept" method="post">
             Nom : <input type="text" name="nom">
             Num : <input type="text" name="num">
+            <input type="checkbox" id="langage1" name="langue[]" value="C">
+            <label for="langage1">C</label><br>
+
+            <input type="checkbox" id="langage2" name="langue[]" value="Java">
+            <label for="langage2">Java</label><br>
+
+            <input type="checkbox" id="langage3" name="langue[]" value="Python">
+            <label for="langage3">Python</label><br>
+
+            <input type="checkbox" id="langage4" name="langue[]" value="JavaScript">
+            <label for="langage4">JavaScript</label><br>
+
+            <input type="checkbox" id="langage5" name="langue[]" value="Ruby">
+            <label for="langage5">Ruby</label><br> 
             <input type="submit" value="envoyer"> 
         </form>
     </body>
