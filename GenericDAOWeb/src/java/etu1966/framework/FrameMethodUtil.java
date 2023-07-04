@@ -55,7 +55,7 @@ public class FrameMethodUtil {
         for(String value : valeur){
             System.out.println(">>>"+ value);
         }
-        setter.invoke(object, attribut.getType().isArray()? valeur : valeur[0]); //verifier si la valeur 
+        setter.invoke(object, attribut.getType().isArray()? valeur : valeur[0]); //verifier si la valeur donne est un String[]
     }
 
     //former les arguments dont une fonction a besoin
