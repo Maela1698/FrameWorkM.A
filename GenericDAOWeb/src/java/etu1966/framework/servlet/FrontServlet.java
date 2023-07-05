@@ -19,6 +19,7 @@ import etu1966.framework.FrameMethodUtil;
 import etu1966.annotations.Scope;
 import java.lang.reflect.Field;
 import jakarta.servlet.RequestDispatcher;
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.lang.reflect.Parameter;
 import java.util.ArrayList;
@@ -226,6 +227,11 @@ public class FrontServlet extends HttpServlet {
             RequestDispatcher dispatcher = request.getRequestDispatcher(mv.getView());
             dispatcher.forward(request, response);
         }
+    }
+    
+     public void singleton(Class c, Object object) throws NoSuchMethodException, InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException {
+         
+        
     }
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**
