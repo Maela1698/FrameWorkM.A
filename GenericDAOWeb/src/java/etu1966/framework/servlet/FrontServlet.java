@@ -14,14 +14,17 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import etu1966.framework.Mapping;
 import etu1966.framework.ModelView;
-import generalisation.annotations.Url;
+import etu1966.annotations.Url;
 import etu1966.framework.FrameMethodUtil;
+import etu1966.annotations.Scope;
 import java.lang.reflect.Field;
 import jakarta.servlet.RequestDispatcher;
 import java.lang.reflect.Method;
 import java.lang.reflect.Parameter;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 
 /**
@@ -31,6 +34,7 @@ import java.util.Map;
 public class FrontServlet extends HttpServlet {
     HashMap<String,Mapping> MappingUrls;
     List<Class> modelClasses;
+    HashMap<Class<?>,Object> instance;
 
     public List<Class> getModelClasses() {
         return modelClasses;
@@ -47,6 +51,16 @@ public class FrontServlet extends HttpServlet {
     public void setMappingUrls(HashMap<String, Mapping> MappingUrls){
         this.MappingUrls = MappingUrls;
     }
+
+    public HashMap<Class<?>, Object> getInstance() {
+        return instance;
+    }
+
+    public void setInstance(HashMap<Class<?>, Object> instance) {
+        this.instance = instance;
+    }
+    
+    
     
 
         
@@ -65,12 +79,15 @@ public class FrontServlet extends HttpServlet {
     public void init() throws ServletException {
         try {
             HashMap<String, Mapping> MappingUrls = new HashMap<>();
+            HashMap<Class<?>,Object> instance = new HashMap<>();
+            this.setInstance(instance);
             this.setMappingUrls(MappingUrls);
 //            Set<String> allKey = this.getMappingUrls().keySet();
             List<Class> allClass = FrameMethodUtil.getClassesInPackage("model");  
             this.setModelClasses(allClass);
             this.formHashMapAllPkClasses(allClass);
             int indice = 0;
+            
             HashMap<String, Mapping> allHashMap = this.getMappingUrls();
 //            for (Map.Entry<String, Mapping> entry : allHashMap.entrySet()) {
 //                String key = entry.getKey();
@@ -145,17 +162,26 @@ public class FrontServlet extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)throws ServletException, IOException, Exception {
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
-            /* TODO output your page here. You may use following sample code. */
             out.println("<h1><u> Url </u>at haha " + getUrl(request) + "</h1>");
             Method m = getMethodFromUrl(getUrl(request));   //get the method that correspond to the url key
             Parameter[] mParameters = m.getParameters();    //les parametres du methode 
-//            for(Parameter param : mParameters){
-//                System.out.println(param.getName());
-//            }
+
             System.out.println("La methode "+ m.getName());
             Class c = getClassFromUrl(getUrl(request)); //get the class that correspond to the url key 
-            System.out.println("La classe "+ c.getSimpleName());
-            Object object = c.getConstructor().newInstance();
+            // Vérifier si la classe a l'annotation @Scope
+            Object object = null ;
+            if (c.isAnnotationPresent(Scope.class)) {
+                HashMap<Class<?>,Object> instanceObject = this.getInstance();
+                Set<Class<?>> keySet = instanceObject.keySet(); // Récupérer les clés (classes) sous forme d'ensemble (Set)
+                if(!keySet.contains(c)){
+                    object = c.getDeclaredConstructor().newInstance();
+                    instanceObject.put(c, object);
+                }
+                else{
+                    object = instanceObject.get(c);
+                    FrameMethodUtil.reinitialize(c,object);
+                }
+            }
             Field[] attributes = c.getDeclaredFields(); // get allFields of the class 
             Map<String, String[]> parameters = request.getParameterMap();
             for(String key : parameters.keySet()){
@@ -177,6 +203,15 @@ public class FrontServlet extends HttpServlet {
                 o = m.invoke(object,new Object[0]);         //sinon : sprint7 (fonction sans argument)
             }
             this.dispatchToView(request, response, o);   //dispatch   
+        }
+    }
+    
+    public void reinitialize(Class c) {
+        Field[] f = c.getDeclaredFields();
+        for(Field field : f){
+            if(field.getType() == int.class || field.getType() == double.class || field.getType() == float.class){
+                
+            }
         }
     }
     //function to redirect page to the view set in the ModelView

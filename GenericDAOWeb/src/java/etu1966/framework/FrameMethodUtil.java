@@ -101,4 +101,23 @@ public class FrameMethodUtil {
         // Conversion du StringBuilder en chaîne de caractères et retour
         return result.toString();
     }
+
+    public static void reinitialize(Class c,Object object) throws NoSuchMethodException, IllegalAccessException, IllegalArgumentException, InvocationTargetException {
+        Field[] f = c.getDeclaredFields();
+        Method[] allClassMethod = c.getDeclaredMethods();
+        for(Field field : f){
+            for(Method m : allClassMethod){
+                String methodM = m.getName().toLowerCase();
+                if(methodM.equals("set"+field.getName())){
+                     if(field.getType() == int.class || field.getType() == double.class || field.getType() == float.class){
+                        m.invoke(object,0);
+                    }
+                    else{
+                        System.out.println(m.getName());
+                        m.invoke(object, (Object)null);
+                    }
+                }
+            }
+        }
+    }
 }

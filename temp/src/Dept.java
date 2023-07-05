@@ -5,14 +5,16 @@
  */
 package model;
 
-import generalisation.annotations.Url;
+
 import etu1966.framework.ModelView;
-import java.util.HashMap;
+import etu1966.annotations.Url;
+import etu1966.annotations.Scope;
 
 /**
  *
  * @author MAELA
  */
+@Scope()
 public class Dept {
     String nom;
     String num;
