@@ -11,11 +11,10 @@ import java.lang.annotation.Target;
 
 /**
  *
- * @author to
+ * @author andri
  */
-
-@Target(ElementType.METHOD)
+@Target(ElementType.TYPE)
 @Retention(RetentionPolicy.RUNTIME)
-public @interface Url {
-    String valeur();
+public @interface Scope {
+    
 }
