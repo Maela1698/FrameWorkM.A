@@ -15,14 +15,16 @@ import jakarta.servlet.http.HttpServletResponse;
 import etu1966.framework.Mapping;
 import etu1966.framework.ModelView;
 import etu1966.annotations.Url;
+import etu1966.annotations.Auth;
 import etu1966.framework.FrameMethodUtil;
 import etu1966.annotations.Scope;
 import java.lang.reflect.Field;
 import jakarta.servlet.RequestDispatcher;
+import jakarta.servlet.ServletConfig;
+import jakarta.servlet.http.HttpSession;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.lang.reflect.Parameter;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -166,7 +168,7 @@ public class FrontServlet extends HttpServlet {
             out.println("<h1><u> Url </u>at haha " + getUrl(request) + "</h1>");
             Method m = getMethodFromUrl(getUrl(request));   //get the method that correspond to the url key
             Parameter[] mParameters = m.getParameters();    //les parametres du methode 
-
+            
             System.out.println("La methode "+ m.getName());
             Class c = getClassFromUrl(getUrl(request)); //get the class that correspond to the url key 
             // Vérifier si la classe a l'annotation @Scope
@@ -183,6 +185,25 @@ public class FrontServlet extends HttpServlet {
                     FrameMethodUtil.reinitialize(c,object);
                 }
             }
+            
+            ServletConfig config = getServletConfig();
+            String sessionName = config.getInitParameter("auth");
+            HttpSession session = request.getSession();
+            
+            try{
+                if(m.isAnnotationPresent(Auth.class)){
+                    Boolean isConnected = (Boolean)session.getAttribute(sessionName);
+                    if(isConnected == null ){
+                        RequestDispatcher dispatcher = request.getRequestDispatcher("ErreurAthentification.jsp");
+                        dispatcher.forward(request, response);
+                    }
+                }
+            }
+            catch (Exception e){
+                
+            }
+
+            
             Field[] attributes = c.getDeclaredFields(); // get allFields of the class 
             Map<String, String[]> parameters = request.getParameterMap();
             for(String key : parameters.keySet()){
@@ -203,7 +224,8 @@ public class FrontServlet extends HttpServlet {
             else{
                 o = m.invoke(object,new Object[0]);         //sinon : sprint7 (fonction sans argument)
             }
-            this.dispatchToView(request, response, o);   //dispatch   
+            this.dispatchToView(request, response, o);
+           
         }
     }
     
@@ -218,21 +240,28 @@ public class FrontServlet extends HttpServlet {
     //function to redirect page to the view set in the ModelView
     public void dispatchToView(HttpServletRequest request, HttpServletResponse response,Object o)throws ServletException, IOException, Exception {
         if (o instanceof ModelView) { 
-            ModelView mv = (ModelView)o;
-            HashMap<String,Object> data = mv.getData();                   //getter tous les dataa(hashMap) du modelView mv
-            for (Map.Entry<String, Object> entry : data.entrySet()) {    //boucler le data et setter attribute pour chaque element          
-                request.setAttribute(entry.getKey(), entry.getValue());
-                System.out.println(entry.getKey()+ ","+ entry.getValue());
+            ModelView mv = (ModelView)o;                                        //caster l'Object o en ModelView
+            HashMap<String,Object> data = mv.getData();                         //getter les data du ModelView mv
+            HashMap<String,Object> sessionMv = mv.getSession();                   //getter les sessions du ModelView mv
+            HttpSession session = request.getSession();
+            for (Map.Entry<String, Object> entry : data.entrySet()) {           //setter attribute du Servelt pour chaque element du data         
+                System.out.println(">>>>>>>>>>>>>>>>>>> Namedata: "+entry);
+                request.setAttribute(entry.getKey(), entry.getValue()); //ajouter les data du modelView dans le request du Servlet pour le recuperer dans le View
+            }
+            if(sessionMv != null){
+                for(Map.Entry<String,Object> entry : sessionMv.entrySet()){         //setter attribute du Servlet pour chaque element du sessionn
+                    System.out.println(">>>>>>>>>>>>>>>>>>> sessionName: "+ entry);
+                    session.setAttribute(entry.getKey(), true);             //ajouter les session du modelView dans le session de ce Servlet
+                }
             }
             RequestDispatcher dispatcher = request.getRequestDispatcher(mv.getView());
             dispatcher.forward(request, response);
         }
     }
+
+   
     
-     public void singleton(Class c, Object object) throws NoSuchMethodException, InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException {
-         
-        
-    }
+    
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**
      * Handles the HTTP <code>GET</code> method.

@@ -3,6 +3,10 @@
     <servlet>
         <servlet-name>FrontServlet</servlet-name>
         <servlet-class>etu1966.framework.servlet.FrontServlet</servlet-class>
+        <init-param>
+            <param-name>auth</param-name>
+            <param-value>isConnected</param-value>
+        </init-param>
     </servlet>
     <servlet-mapping>
         <servlet-name>FrontServlet</servlet-name>
@@ -13,4 +17,5 @@
             30
         </session-timeout>
     </session-config>
+    
 </web-app>

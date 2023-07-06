@@ -112,7 +112,7 @@ public class FrameMethodUtil {
             for(Method m : allClassMethod){
                 String methodM = m.getName().toLowerCase();
                 if(methodM.equals("set"+field.getName())){
-                     if(field.getType() == int.class || field.getType() == double.class || field.getType() == float.class){
+                    if(field.getType() == int.class || field.getType() == double.class || field.getType() == float.class){
                         m.invoke(object,0);
                     }
                     else{

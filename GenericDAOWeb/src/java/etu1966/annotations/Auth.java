@@ -4,6 +4,10 @@
  */
 package etu1966.annotations;
 
+/**
+ *
+ * @author andri
+ */
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
@@ -13,8 +17,8 @@ import java.lang.annotation.Target;
  *
  * @author andri
  */
-@Target(ElementType.TYPE)
+@Target(ElementType.METHOD)
 @Retention(RetentionPolicy.RUNTIME)
-public @interface Scope {
-
+public @interface Auth {
+    String value() default "";
 }
