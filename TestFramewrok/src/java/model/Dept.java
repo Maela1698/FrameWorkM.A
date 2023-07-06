@@ -6,6 +6,7 @@
 package model;
 
 
+import etu1966.annotations.Auth;
 import etu1966.framework.ModelView;
 import etu1966.annotations.Url;
 import etu1966.annotations.Scope;
@@ -96,6 +97,24 @@ public class Dept {
         System.out.println("Sprint8");
         System.out.println("laharana"+laharana);
         System.out.println("anarana"+anarana);
+    }
+    
+    @Url(valeur="/testEmp")
+    @Auth
+    public ModelView delete(){
+        ModelView m = new ModelView("delete.jsp");
+        String test = "key";
+        String key = "You can access to this delete() method in Dept Class";
+        m.addItem(key, test);
+        return m;
+    }
+    
+    @Url(valeur="/seConnecter")
+    public ModelView seConnecter(){
+        ModelView m = new ModelView("form8.jsp");
+        m.addItem("testConnecion","Huhu");
+        m.addSession("isConnected",true);
+        return m;
     }
     
     
