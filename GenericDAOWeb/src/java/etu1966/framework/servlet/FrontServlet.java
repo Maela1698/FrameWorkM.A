@@ -190,6 +190,7 @@ public class FrontServlet extends HttpServlet {
             String sessionConnectedProfile = config.getInitParameter("auth-connectedProfile");
 //            System.out.println("----------- le nom de session profile dans le webxml :"+sessionConnectedProfile);
             HttpSession session = request.getSession();
+            
             try{   
                 if(m.isAnnotationPresent(Auth.class)){
                     
