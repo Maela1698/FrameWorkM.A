@@ -204,13 +204,13 @@ public class FrontServlet extends HttpServlet {
                     FrameMethodUtil.reinitialize(c,object);
                 }
             }
-            HttpSession session = request.getSession();
+            
             
             if(m.isAnnotationPresent(session.class)){
                 System.out.println("Ye mila anle session io classe io " + c.getSimpleName());
                 this.addSessionToClass(c,request,object);
             }
-            
+            HttpSession session = request.getSession();
             ServletConfig config = getServletConfig();
             String sessionConnected = config.getInitParameter("auth-connectedOnly");
             String sessionConnectedProfile = config.getInitParameter("auth-connectedProfile");
