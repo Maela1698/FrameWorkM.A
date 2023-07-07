@@ -207,7 +207,7 @@ public class FrontServlet extends HttpServlet {
             Field[] attributes = c.getDeclaredFields(); // get allFields of the class 
             Map<String, String[]> parameters = request.getParameterMap();
             for(String key : parameters.keySet()){
-                String keyLetterOnly = FrameMethodUtil.formParamName(key);      //enlever les caracteres speciaux du nom des key
+                String keyLetterOnly = FrameMethodUtil.formParamName(key); //enlever les caracteres speciaux du nom des key
                 System.out.println("---------------"+keyLetterOnly);
 //                System.out.println("-----------------------: "+key);
                 for(Field attribut : attributes){
