@@ -296,6 +296,7 @@ public class FrontServlet extends HttpServlet {
                     session.setAttribute(entry.getKey(), entry.getValue());             //ajouter les session du modelView dans le session de ce Servlet
                 }
             }
+            
             RequestDispatcher dispatcher = request.getRequestDispatcher(mv.getView());
             dispatcher.forward(request, response);
         }
