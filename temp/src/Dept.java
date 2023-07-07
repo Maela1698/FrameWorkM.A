@@ -136,18 +136,8 @@ public class Dept {
     }
     
     
-<<<<<<< Updated upstream
     
     
     
-=======
-    @Url(valeur="/addSessionEmp")
-    public ModelView addSessionEmp(){
-        ModelView view = new ModelView("addSessionEmp.jsp");
-        String huhu = "EMP1902";
-        view.addSession("idEmp", huhu);
-        return view;
-    }
->>>>>>> Stashed changes
     
 }
