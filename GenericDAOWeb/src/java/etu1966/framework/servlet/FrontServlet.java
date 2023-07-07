@@ -187,15 +187,32 @@ public class FrontServlet extends HttpServlet {
             }
             
             ServletConfig config = getServletConfig();
-            String sessionName = config.getInitParameter("auth");
+            String sessionConnected = config.getInitParameter("auth-connectedOnly");
+            String sessionConnectedProfile = config.getInitParameter("auth-connectedProfile");
+//            System.out.println("----------- le nom de session profile dans le webxml :"+sessionConnectedProfile);
             HttpSession session = request.getSession();
-            
-            try{
+            try{   
                 if(m.isAnnotationPresent(Auth.class)){
-                    Boolean isConnected = (Boolean)session.getAttribute(sessionName);
-                    if(isConnected == null ){
-                        RequestDispatcher dispatcher = request.getRequestDispatcher("ErreurAthentification.jsp");
-                        dispatcher.forward(request, response);
+                    
+                    Auth annotation = m.getAnnotation(Auth.class);
+                    if(annotation.value().length() > 0 ){
+                        String annotationValue = annotation.value();
+                        Boolean isConnected = (Boolean)session.getAttribute(sessionConnected);
+                        String profileValue = (String)session.getAttribute(sessionConnectedProfile);
+                        System.out.println("la valeur du session Profile dans le serveur est : --------------------::::::: "+profileValue);
+                        if(isConnected == null || profileValue != annotationValue ){
+                            RequestDispatcher dispatcher = request.getRequestDispatcher("ErreurAthentification.jsp");
+                            request.setAttribute("Erreur authentification", "Veuillez vous connectez en tant que"+annotationValue);
+                            dispatcher.forward(request, response);
+                        }
+                    }
+                    else if(annotation.value().length()== 0 ){
+                        Boolean isConnected = (Boolean)session.getAttribute(sessionConnected);
+                        if(isConnected == null ){
+                            RequestDispatcher dispatcher = request.getRequestDispatcher("ErreurAthentification.jsp");
+                            request.setAttribute("Erreur authentification", "Vous devriez vous connectez simplement");
+                            dispatcher.forward(request, response);
+                        }
                     }
                 }
             }
