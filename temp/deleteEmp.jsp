@@ -12,6 +12,6 @@
         <title>JSP Page</title>
     </head>
     <body>
-        <h1>You can access to this delete() method in Dept Class</h1>
+        <h1>You can access to this deleteEmp() method in Dept Class</h1>
     </body>
 </html>
