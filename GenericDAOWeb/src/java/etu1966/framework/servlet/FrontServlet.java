@@ -192,6 +192,7 @@ public class FrontServlet extends HttpServlet {
             HttpSession session = request.getSession();
             try{   
                 if(m.isAnnotationPresent(Auth.class)){
+                    
                     Auth annotation = m.getAnnotation(Auth.class);
                     if(annotation.value().length() > 0 ){
                         String annotationValue = annotation.value();
