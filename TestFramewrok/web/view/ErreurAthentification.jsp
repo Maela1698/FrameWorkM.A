@@ -5,6 +5,7 @@
 --%>
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
+<% String erreur = (String)request.getAttribute("Erreur authentification");%>
 <!DOCTYPE html>
 <html>
     <head>
@@ -12,6 +13,6 @@
         <title>JSP Page</title>
     </head>
     <body>
-        <h1>Vous devriez etre Authentifie</h1>
+        <h1><% out.print(erreur);%></h1>
     </body>
 </html>

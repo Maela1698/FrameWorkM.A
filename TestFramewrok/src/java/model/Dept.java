@@ -101,10 +101,10 @@ public class Dept {
     
     @Url(valeur="/testEmp")
     @Auth
-    public ModelView delete(){
-        ModelView m = new ModelView("delete.jsp");
+    public ModelView getListEmp(){
+        ModelView m = new ModelView("listEmp.jsp");
         String test = "key";
-        String key = "You can access to this delete() method in Dept Class";
+        String key = "You can access to this getListEmp() method in Dept Class";
         m.addItem(key, test);
         return m;
     }
@@ -116,6 +116,25 @@ public class Dept {
         m.addSession("isConnected",true);
         return m;
     }
+    
+    @Url(valeur="/deleteEmp")
+    @Auth("admin")
+    public ModelView deleteEmp(){
+        ModelView m = new ModelView("deleteEmp.jsp");
+        String key = "deleteEmp";
+        String value = "You can access to this deleteEmp() method in Dept Class";
+        m.addItem(key,value);
+        return m;
+    }
+    
+    @Url(valeur="/seConnecterAdmin")
+    public ModelView seConnecterAdmin(){
+        ModelView m = new ModelView("form8.jsp");
+        m.addSession("isConnected",true);
+        m.addSession("profile","admin");
+        return m;
+    }
+    
     
     
     

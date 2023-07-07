@@ -4,8 +4,12 @@
         <servlet-name>FrontServlet</servlet-name>
         <servlet-class>etu1966.framework.servlet.FrontServlet</servlet-class>
         <init-param>
-            <param-name>auth</param-name>
+            <param-name>auth-connectedOnly</param-name>
             <param-value>isConnected</param-value>
+        </init-param>
+        <init-param>
+            <param-name>auth-connectedProfile</param-name>
+            <param-value>profile</param-value>
         </init-param>
     </servlet>
     <servlet-mapping>
