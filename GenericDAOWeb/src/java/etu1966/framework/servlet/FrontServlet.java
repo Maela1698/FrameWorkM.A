@@ -15,6 +15,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import etu1966.framework.Mapping;
 import etu1966.framework.ModelView;
 import etu1966.annotations.Url;
+import etu1966.annotations.session;
 import etu1966.annotations.Auth;
 import etu1966.framework.FrameMethodUtil;
 import etu1966.annotations.Scope;
@@ -24,9 +25,11 @@ import jakarta.servlet.ServletConfig;
 import jakarta.servlet.http.HttpSession;
 import java.lang.reflect.Method;
 import java.lang.reflect.Parameter;
+import java.util.Enumeration;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+
 
 
 /**
@@ -187,6 +190,10 @@ public class FrontServlet extends HttpServlet {
             
             
             
+            if(m.isAnnotationPresent(session.class)){
+                System.out.println("Ye mila anle session io classe io " + c.getSimpleName());
+                this.addSessionToClass(c,request,object);
+            }
             HttpSession session = request.getSession();
             ServletConfig config = getServletConfig();
             String sessionConnected = config.getInitParameter("auth-connectedOnly");
@@ -270,9 +277,10 @@ public class FrontServlet extends HttpServlet {
             if(sessionMv != null){
                 for(Map.Entry<String,Object> entry : sessionMv.entrySet()){         //setter attribute du Servlet pour chaque element du sessionn
                     System.out.println(">>>>>>>>>>>>>>>>>>> sessionName: "+ entry);
-                    session.setAttribute(entry.getKey(), true);             //ajouter les session du modelView dans le session de ce Servlet
+                    session.setAttribute(entry.getKey(), entry.getValue());             //ajouter les session du modelView dans le session de ce Servlet
                 }
             }
+            
             RequestDispatcher dispatcher = request.getRequestDispatcher(mv.getView());
             dispatcher.forward(request, response);
         }
@@ -327,4 +335,34 @@ public class FrontServlet extends HttpServlet {
     public String getServletInfo() {
         return "Short description";
     }// </editor-fold>
+
+    public void addSessionToClass(Class c,HttpServletRequest request,Object o) throws NoSuchMethodException {
+        try{
+            HttpSession thisSession = request.getSession();
+            Method m = null;
+            
+            for(Method method : c.getDeclaredMethods()){
+                if(method.getName().equals("setSession")){
+                    m = method;
+                }
+            }
+            System.out.println("la methode pour setter les session de cette classe " + c.getSimpleName() + " est :" + m.getName() );
+            
+            HashMap<String, Object> allSession = new HashMap<>();
+            Enumeration<String> attributeNames = thisSession.getAttributeNames();
+            
+            while (attributeNames.hasMoreElements()) {
+                String attributeName = attributeNames.nextElement();
+                Object attributeValue = thisSession.getAttribute(attributeName);
+                allSession.put(attributeName, attributeValue);
+            }
+            System.out.println(allSession);
+            System.out.println("begin");
+            m.invoke(o, allSession);
+            System.out.println("end");
+        }
+        catch(Exception e){
+            e.printStackTrace();
+        }
+    }
 }

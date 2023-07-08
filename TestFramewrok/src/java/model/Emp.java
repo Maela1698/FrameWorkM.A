@@ -5,13 +5,14 @@
 package model;
 
 import etu1966.framework.ModelView;
-import etu1966.annotations.Auth;
+import etu1966.annotations.Scope;
 import etu1966.annotations.Url;
 
 /**
  *
  * @author andri
  */
+@Scope
 public class Emp {
     String name;
     String dept;
@@ -35,6 +36,12 @@ public class Emp {
     public Emp() {
     }
     
+    @Url(valeur="/addSessionEmp")
+    public ModelView addSessionEmp(){
+        ModelView view = new ModelView("addSession.jsp");
+        view.addSession("idEmp","EMP1090");
+        return view;
+    }
     
    
     

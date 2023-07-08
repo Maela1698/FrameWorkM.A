@@ -10,6 +10,9 @@ import etu1966.annotations.Auth;
 import etu1966.framework.ModelView;
 import etu1966.annotations.Url;
 import etu1966.annotations.Scope;
+import etu1966.annotations.session;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  *
@@ -20,6 +23,15 @@ public class Dept {
     String nom;
     String num;
     String[] langue;
+    HashMap<String,Object> session;
+
+    public HashMap<String, Object> getSession() {
+        return session;
+    }
+
+    public void setSession(HashMap<String, Object> session) {
+        this.session = session;
+    }
 
     public String getNom() {
         return nom;
@@ -57,7 +69,10 @@ public class Dept {
         this.setLangue(langue);
     }
 
-    public Dept(){ }
+    public Dept(){ 
+        HashMap<String,Object> session = new HashMap<>();
+        this.setSession(session);
+    }
     
     @Url(valeur="/testDept")
     public ModelView testhaha(){
@@ -133,6 +148,25 @@ public class Dept {
         m.addSession("isConnected",true);
         m.addSession("profile","admin");
         return m;
+    }
+    
+    
+    
+    @session
+    @Url(valeur="/reservationTerrain")
+    public ModelView reservationTerrain(){
+        ModelView  view =  new ModelView("reservation.jsp");
+        String key = "testSprint12";
+        String value = null;
+        HashMap<String,Object> session = this.getSession();
+        
+        for (Map.Entry<String, Object> entry : session.entrySet()) {           //setter attribute du Servelt pour chaque element du data         
+            if(entry.getKey().equals("idEmp")){
+                value = (String)entry.getValue();
+            }
+        }
+        view.addItem(key, value);
+        return view;
     }
     
     
